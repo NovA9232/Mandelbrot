@@ -44,8 +44,6 @@ func main() {
 		mouseMv := float64(rl.GetMouseWheelMove())
 		if mouseMv != 0 {
 			zoom += zoomSpd*mouseMv
-			focusX = (w/2) + zoom*focusX
-			focusY = (h/2) + zoom*focusY
 			rendered = false
 		}
 
