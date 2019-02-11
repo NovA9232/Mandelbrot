@@ -27,12 +27,20 @@ func mandelbrotPixel(i, j, W, H, zoom, maxIteration float64) float64 {
 }
 
 func mandelbrotFull(focusX, focusY, W, H, zoom, maxIteration float64) {
-	println(focusX, focusY)
-  for i:=float64(0); i < W; i++ {
-		for j:=float64(0); j < H; j++ {
-			iteration := mandelbrotPixel(i+focusX, j+focusY, W, H, zoom, maxIteration)
-			clr := rl.NewColor(uint8((iteration/maxIteration)*255), uint8((iteration/maxIteration)*255), uint8((iteration/maxIteration)*255), 255)
-			rl.DrawPixel(int32(i), int32(j), clr)
+	halfW, halfH := W/2, H/2
+
+	mandelbrotArea(focusX, focusY, 0, 0, halfW, halfH, W, H, zoom, maxIteration)
+	mandelbrotArea(focusX, focusY, halfW, 0, halfW, halfH, W, H, zoom, maxIteration)
+	mandelbrotArea(focusX, focusY, 0, halfH, halfW, halfH, W, H, zoom, maxIteration)
+	mandelbrotArea(focusX, focusY, halfW, halfH, halfW, halfH, W, H, zoom, maxIteration)
+}
+
+func mandelbrotArea(offsetX, offsetY, scrnX, scrnY, maxW, maxH, W, H, zoom, maxIteration float64) { // W and H are total width and height
+  for i:=float64(scrnX); i < maxW+scrnX; i++ {
+		for j:=float64(scrnY); j < maxH+scrnY; j++ {
+			iteration := mandelbrotPixel(i+offsetX, j+offsetY, W, H, zoom, maxIteration)
+			rl.DrawPixel(int32(i), int32(j), rl.NewColor(uint8((iteration/maxIteration)*255), uint8((iteration/maxIteration)*255), uint8((iteration/maxIteration)*255), 255))
 		}
 	}
+	rl.DrawRectangleLines(int32(scrnX), int32(scrnY), int32(maxW), int32(maxH), rl.Red)
 }

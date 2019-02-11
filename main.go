@@ -20,7 +20,6 @@ func main() {
 	rendered := false
 
 	var focusX, focusY float64 = -SCREEN_W/2, -SCREEN_H/2
-	var w, h float64 = SCREEN_W, SCREEN_H
 	var zoom float64 = 1
 
   for !rl.WindowShouldClose() {
@@ -44,12 +43,7 @@ func main() {
 		mouseMv := float64(rl.GetMouseWheelMove())
 		if mouseMv != 0 {
 			dz := zoomSpd*mouseMv*zoom
-			oldZoom := zoom
 			zoom += dz
-			w, h = w/zoom, h/zoom
-			focusX -= (w * (1 - 1/(zoom/oldZoom)))
-			focusY -= (h * (1 - 1/(zoom/oldZoom)))
-			println(focusX, focusY, dz, w, h, "focX, focY, dz, w, h")
 			rendered = false
 		}
 
@@ -65,8 +59,8 @@ func main() {
 		if !rendered {
 			rl.ClearBackground(rl.Black)
 			mandelbrotFull(focusX, focusY, SCREEN_W, SCREEN_H, zoom, maxIteration)
-			rl.DrawPixel(-int32(focusX), -int32(focusY), rl.Red)
 			rendered = true
+			println("Done rendering.")
 		}
 
 		rl.EndDrawing()
