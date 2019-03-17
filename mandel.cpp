@@ -50,6 +50,7 @@ int main(int argc, char* argv[]) {
 		if (mouseMv != 0) {
 			double dz = zoomSpd*mouseMv*zoom;
 			zoom += dz;
+			offX += (offX/zoom)*dz;
 			rendered = false;
 		}
 
